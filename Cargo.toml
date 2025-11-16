@@ -3,6 +3,14 @@ name = "ezytutor"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "ezytutor"
+path = "src/main.rs"
+
+[[bin]]
+name = "test_server"
+path = "src/bin/test_server.rs"
+
 [dependencies]
 actix-web = "4.4"
 actix-cors = "0.6"

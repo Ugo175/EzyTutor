@@ -6,7 +6,7 @@ mod services;
 mod middleware;
 mod errors;
 
-use actix_web::{web, App, HttpServer, middleware::Logger};
+use actix_web::{App, HttpServer, middleware::Logger};
 use actix_cors::Cors;
 
 #[actix_web::main]
@@ -15,21 +15,17 @@ async fn main() -> std::io::Result<()> {
 
     let config = config::Config::from_env().expect("Failed to load configuration");
     
-    // Try to create database pool, but don't fail if it's not available
-    let pool_result = database::create_pool(&config.database_url).await;
-    
-    match pool_result {
-        Ok(pool) => {
-            log::info!("Database connected successfully");
-            if let Err(e) = database::run_migrations(&pool).await {
-                log::warn!("Migration failed: {}", e);
-            }
-        }
-        Err(e) => {
-            log::warn!("Database connection failed: {}. Running without database.", e);
-        }
-    }
+    // Create database pool - fail if not available for testing
+    let pool = database::create_pool(&config.database_url)
+        .await
+        .expect("Failed to create database pool. Please ensure PostgreSQL is running and DATABASE_URL is set.");
 
+    // Run migrations
+    database::run_migrations(&pool)
+        .await
+        .expect("Failed to run migrations");
+
+    log::info!("Database connected and migrations completed successfully");
     log::info!("Starting EzyTutor server at {}:{}", config.host, config.port);
 
     HttpServer::new(move || {
@@ -39,6 +35,7 @@ async fn main() -> std::io::Result<()> {
             .allow_any_header();
 
         App::new()
+            .app_data(actix_web::web::Data::new(pool.clone()))
             .wrap(cors)
             .wrap(Logger::default())
             .configure(handlers::configure_routes)

@@ -1,6 +1,19 @@
-# # EzyTutor - Online Tutoring Platform
+# EzyTutor - Online Tutoring Platform
 
-EzyTutor is a comprehensive online tutoring platform built with Rust (backend) and React (frontend), following a modern microservices architecture.
+EzyTutor is a comprehensive online tutoring platform built with Rust (backend) and React (frontend), featuring a complete REST API with JWT authentication, role-based access control, and comprehensive business logic.
+
+## 🚀 Project Status
+
+**Backend: ✅ COMPLETE** - Fully implemented and tested
+- ✅ Complete REST API with 15+ endpoints
+- ✅ JWT authentication and role-based access control
+- ✅ PostgreSQL database with migrations
+- ✅ Comprehensive business logic and validation
+- ✅ Error handling and logging
+- ✅ API testing suite included
+
+**Frontend: 🚧 IN PROGRESS** - React components implemented
+**Mobile: 📋 PLANNED** - React Native applications
 
 ## Architecture
 
@@ -45,76 +58,143 @@ The application follows a layered architecture with:
    cd EzyTutor
    ```
 
-2. **Set up environment variables**
+2. **Install dependencies**
+   ```bash
+   # Install Rust (if not already installed)
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   
+   # Install PostgreSQL (macOS)
+   brew install postgresql
+   brew services start postgresql
+   ```
+
+3. **Set up environment variables**
    ```bash
    cp .env.example .env
    # Edit .env with your database credentials and JWT secret
    ```
 
-3. **Set up the database**
+4. **Set up the database**
    ```bash
    # Create database
    createdb ezytutor
    
-   # Run migrations
-   cargo install sqlx-cli
-   sqlx migrate run
+   # The migrations will run automatically when you start the server
    ```
 
-4. **Run the backend**
+5. **Run the backend**
    ```bash
-   cargo run
+   # Full server (requires PostgreSQL)
+   cargo run --bin ezytutor
+   
+   # Or test server (no database required)
+   cargo run --bin test_server
    ```
 
 The API will be available at `http://localhost:8080`
 
+### Quick Testing
+
+Test the API without setting up a database:
+```bash
+# Start test server
+cargo run --bin test_server
+
+# Run basic tests
+./test_simple.sh
+```
+
+For full API testing with database:
+```bash
+# Start full server
+cargo run --bin ezytutor
+
+# Run comprehensive tests
+./test_api.sh
+```
+
 ### API Endpoints
 
-#### Authentication
+#### Public Endpoints
+- `GET /api/v1/health` - Health check endpoint
 - `POST /api/v1/auth/register` - Register a new user
-- `POST /api/v1/auth/login` - Login user
+- `POST /api/v1/auth/login` - Login user and get JWT token
+- `GET /api/v1/courses` - List all active courses
+- `GET /api/v1/courses/{id}` - Get specific course details
+- `GET /api/v1/tutors` - List all available tutors
+- `GET /api/v1/tutors/{id}` - Get specific tutor profile
+- `GET /api/v1/tutors/{id}/reviews` - Get reviews for a tutor
+- `GET /api/v1/tutors/search?specialization=Math` - Search tutors by specialization
 
-#### Courses
-- `GET /api/v1/courses` - List all courses
-- `POST /api/v1/courses` - Create a new course (tutor only)
-- `GET /api/v1/courses/{id}` - Get course details
-- `PUT /api/v1/courses/{id}` - Update course (tutor only)
-- `DELETE /api/v1/courses/{id}` - Delete course (tutor only)
+#### Protected Endpoints (Require JWT Token)
 
-#### Tutors
-- `GET /api/v1/tutors` - List all tutors
+**Course Management (Tutors Only)**
+- `POST /api/v1/courses` - Create a new course
+- `PUT /api/v1/courses/{id}` - Update course details
+- `DELETE /api/v1/courses/{id}` - Delete a course
+- `GET /api/v1/my/courses` - Get tutor's own courses
+
+**Tutor Profile Management**
 - `POST /api/v1/tutors/profile` - Create tutor profile
 - `PUT /api/v1/tutors/profile` - Update tutor profile
-- `GET /api/v1/tutors/{id}` - Get tutor details
-- `POST /api/v1/tutors/{id}/reviews` - Add review for tutor
 
-#### Health Check
-- `GET /api/v1/health` - Health check endpoint
+**Review System (Students Only)**
+- `POST /api/v1/tutors/{id}/reviews` - Add review for a tutor
+
+#### Authentication
+All protected endpoints require a Bearer token in the Authorization header:
+```
+Authorization: Bearer <jwt_token>
+```
 
 ## Database Schema
 
 The application uses PostgreSQL with the following main tables:
-- `users` - User accounts and authentication
-- `tutors` - Tutor profiles and specializations
-- `courses` - Course information and pricing
-- `tutor_reviews` - Reviews and ratings for tutors
+
+- **`users`** - User accounts with email, password, role (student/tutor/admin)
+- **`tutors`** - Tutor profiles with bio, specializations, hourly rates, ratings
+- **`courses`** - Course information with title, description, price, difficulty level
+- **`tutor_reviews`** - Student reviews and ratings (1-5 stars) for tutors
+
+### Key Features:
+- **Custom PostgreSQL enums** for user roles and difficulty levels
+- **Automatic timestamps** with triggers for created_at/updated_at
+- **Comprehensive indexes** for performance optimization
+- **Foreign key constraints** ensuring data integrity
+- **Rating aggregation** automatically calculated from reviews
 
 ## Development
 
 ### Running Tests
 ```bash
+# Unit and integration tests
 cargo test
+
+# API endpoint testing (requires database)
+./test_api.sh
+
+# Basic health check testing (no database)
+./test_simple.sh
 ```
 
-### Code Formatting
+### Code Quality
 ```bash
+# Format code
 cargo fmt
+
+# Lint code
+cargo clippy
+
+# Check compilation
+cargo check
 ```
 
-### Linting
-```bash
-cargo clippy
-```
+### Development Workflow
+1. **Make changes** to source code
+2. **Test locally** with `cargo run --bin test_server`
+3. **Run tests** with `./test_simple.sh`
+4. **Set up database** for full testing
+5. **Run full tests** with `./test_api.sh`
 
 ## Deployment
 

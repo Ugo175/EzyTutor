@@ -1,0 +1,38 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test executables
+simple_test
+standalone_test
+test_functionality
+
+# SQLx
+.sqlx/
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/dist/

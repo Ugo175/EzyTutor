@@ -1,0 +1,26 @@
+[package]
+name = "ezytutor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.4"
+actix-cors = "0.6"
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "chrono", "uuid", "migrate"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+bcrypt = "0.15"
+jsonwebtoken = "9.2"
+env_logger = "0.10"
+log = "0.4"
+config = "0.14"
+thiserror = "1.0"
+anyhow = "1.0"
+validator = { version = "0.18", features = ["derive"] }
+actix-web-httpauth = "0.8"
+
+[dev-dependencies]
+actix-rt = "2.9"

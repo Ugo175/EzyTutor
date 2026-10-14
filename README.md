@@ -2,18 +2,18 @@
 
 EzyTutor is a comprehensive online tutoring platform built with Rust (backend) and React (frontend), featuring a complete REST API with JWT authentication, role-based access control, and comprehensive business logic.
 
-## 🚀 Project Status
+## Project Status
 
-**Backend: ✅ COMPLETE** - Fully implemented and tested
-- ✅ Complete REST API with 15+ endpoints
-- ✅ JWT authentication and role-based access control
-- ✅ PostgreSQL database with migrations
-- ✅ Comprehensive business logic and validation
-- ✅ Error handling and logging
-- ✅ API testing suite included
+**Backend: COMPLETE** - Fully implemented and tested
+- Complete REST API with 15+ endpoints
+- JWT authentication and role-based access control
+- PostgreSQL database with migrations
+- Comprehensive business logic and validation
+- Error handling and logging
+- API testing suite included
 
-**Frontend: 🚧 IN PROGRESS** - React components implemented
-**Mobile: 📋 PLANNED** - React Native applications
+**Frontend: IN PROGRESS** - React components implemented
+**Mobile: PLANNED** - React Native applications
 
 ## Architecture
 

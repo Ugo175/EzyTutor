@@ -1,4 +1,4 @@
-# EzyTutor - Online Tutoring Platform
+# EzyTutor - Online Tutoring Platform..
 
 EzyTutor is a comprehensive online tutoring platform built with Rust (backend) and React (frontend), featuring a complete REST API with JWT authentication, role-based access control, and comprehensive business logic.
 
